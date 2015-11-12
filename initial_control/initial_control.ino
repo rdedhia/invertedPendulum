@@ -21,11 +21,8 @@ String incoming = "";
 String panString = "";
 String tiltString = "";
 
-// Motor control
-int maxVelocity = 250;
-
 // Motor velocities
-double mVelocity;
+double mVelocity = 200;
 
 // Timing
 int time;
@@ -51,14 +48,17 @@ void loop() {
   mAngle = (mCounter % numTicks) / mDivider;
   
   // hard code speed at 100
-  md.setM2Speed(100);
+  md.setM1Speed(mVelocity);
 
   time = millis();
   // Print stuff every half second
-  if (time-lastTime > 500) {
+  if (time-lastTime > 2500) {
     Serial.print(mAngle);
+    Serial.print('\n');
     Serial.print(mCounter);
     Serial.print('\n');
+    Serial.print('\n');
+    mVelocity = mVelocity * -1;
     lastTime = time;
   }
 }
@@ -67,8 +67,8 @@ void loop() {
 void ISR_motor()
 {
   if (digitalRead(pinA) == digitalRead(pinB)) {
-    mCounter++;
-  } else {
     mCounter--;
+  } else {
+    mCounter++;
   }
 }
