@@ -22,7 +22,7 @@ String panString = "";
 String tiltString = "";
 
 // Motor velocities
-double mVelocity = 200;
+double mVelocity = 255;
 
 // Timing
 int time;
@@ -51,8 +51,8 @@ void loop() {
   md.setM1Speed(mVelocity);
 
   time = millis();
-  // Print stuff every half second
-  if (time-lastTime > 2500) {
+  // Flip velocity
+  if (time-lastTime > 500) {
     Serial.print(mAngle);
     Serial.print('\n');
     Serial.print(mCounter);

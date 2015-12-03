@@ -2,7 +2,7 @@
 
 #define pinA 2
 #define pinB 5
-#define numTicks 1216
+#define numTicks 608
 
 // Create the motor shield object with the default I2C address
 DualMC33926MotorShield md;
@@ -12,19 +12,14 @@ volatile int mCounter;
 
 // For converting from encoder ticks to angles
 const float mDivider = numTicks / 360.;
-const float pulleyMm;
+const float pulleyMm = 200.12;
 
 // Angle measures
 float mAngle;
 float pos;
 
-// PySerial stuff
-String incoming = "";
-String panString = "";
-String tiltString = "";
-
 // Motor velocities
-double mVelocity = 255;
+double mVelocity = 200;
 
 // Timing
 int time;
@@ -49,24 +44,26 @@ void setup() {
 void loop() {
   // calculating angle from counters by scaling it
   mAngle = mCounter / mDivider;
-  pos = (mAngle / 360)*pulleyMm;
+  pos = (mAngle / 360.)*pulleyMm;
   
   // hard code speed at 255
   md.setM1Speed(mVelocity);
 
   time = millis();
-  // Print stuff every half second
-  if (time-lastTime > 500) {
-    Serial.print(mAngle);
-    Serial.print('\n');
-    Serial.print(mCounter);
-    Serial.print('\n');
+  // Print stuff
+  if (time-lastTime > 250) {
+    Serial.println(mAngle);
+    Serial.println(mCounter);
+    Serial.println(pos);
+    Serial.println(time);
     Serial.print('\n');
     lastTime = time;
   }
   
-  if (abs(pos) >= 600) {
-    mVelocity = mVelocity * -1;
+  if (pos > 300) {
+    mVelocity = -200;
+  } else if (pos < -300) {
+    mVelocity = 200;
   }
 }
 
