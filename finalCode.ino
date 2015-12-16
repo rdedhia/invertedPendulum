@@ -27,7 +27,7 @@ float prevPos;
 // Gain constants
 const float K = 240; // K ~ V/rad
 const float kp = 150; // Kp ~ V/m
-const float kv = 0.2; // Kv ~ V*s/rad
+const float kv = 0.5; // Kv ~ V*s/rad
 
 // Pot readings
 const float potToAngle = 3.09;
@@ -117,7 +117,7 @@ ISR(TIMER0_COMPA_vect) {
   } 
   
   // Integrator compensation, (s+6)/(s+0.1) at 61.75Hz
-  tempVolt = K*1.049*pendError - K*.9514*pendErrorPrev + .9984*interPrev; // V
+  tempVolt = K*1.04*pendError - K*.9593*pendErrorPrev + .9984*interPrev; // V
   interPrev = tempVolt; // V
   
   // Update angles and positions
